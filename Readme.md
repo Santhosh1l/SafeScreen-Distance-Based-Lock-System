@@ -1,6 +1,4 @@
-Here's a sample README for your project:
 
----
 
 # Face Distance Proximity Alert & Lock System
 
