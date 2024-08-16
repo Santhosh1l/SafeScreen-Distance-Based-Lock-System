@@ -1,5 +1,4 @@
 
-
 # Face Distance Proximity Alert & Lock System
 
 ## Overview
@@ -67,8 +66,6 @@ The locking mechanism is compatible with:
 - **macOS:** Uses `pmset displaysleepnow` (puts the display to sleep, which locks the screen).
 - **Linux (GNOME):** Uses `gnome-screensaver-command -l`.
 
+## License
 
-
----
-
-You can save this as `README.md` in your project directory.
+This project is licensed under the MIT License.
