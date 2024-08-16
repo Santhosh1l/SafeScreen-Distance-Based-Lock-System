@@ -1,5 +1,5 @@
 
-# Face Distance Proximity Alert & Lock System
+# Safedistane based Lock System
 
 ## Overview
 
