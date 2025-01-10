@@ -11,6 +11,7 @@ DANGER_DISTANCE = 400  # Distance in mm to warn the user to move back
 BRIGHTNESS_THRESHOLD = 100  # Threshold to decide if brightness needs to be increased
 ON_DURATION = 600  # Camera on duration in seconds (10 minutes)
 OFF_DURATION = 10   # Camera off duration in seconds (10 sec)
+WARNING_DURATION = 5 # Duration in seconds to wait before locking
 
 lock_triggered = False
 
@@ -45,6 +46,8 @@ def main():
     face_cascade = cv2.CascadeClassifier(cv2.data.haarcascades + 'haarcascade_frontalface_default.xml')
     vidcap = cv2.VideoCapture(0)
     
+    warning_start_time = None  # To track how long the user has been too close
+    
     while True:
         lock_triggered = False
         # Turn on the camera
@@ -63,12 +66,21 @@ def main():
             faces = face_cascade.detectMultiScale(gray, scaleFactor=1.1, minNeighbors=8, minSize=(80, 80))
             
             warning_message = "Safe distance."
+            face_too_close = False
             for (x, y, w, h) in faces:
                 distance = distance_to_camera(KNOWN_WIDTH, FOCAL_LENGTH, w)
                 if distance < DANGER_DISTANCE:
+                    face_too_close = True
                     warning_message = "Go back! Your face is too close."
-                    lock_computer()  # Lock the computer if face is too close
                     break
+            
+            if face_too_close:
+                if warning_start_time is None:
+                    warning_start_time = time.time()  # Start the timer
+                elif time.time() - warning_start_time >= WARNING_DURATION:
+                    lock_computer()  # Lock the computer if face is too close for too long
+            else:
+                warning_start_time = None  # Reset the timer if the face is at a safe distance
             
             height, width = frame.shape[:2]
             cv2.putText(frame, warning_message, (10, height - 20), cv2.FONT_HERSHEY_SIMPLEX, 0.75, (0, 0, 255) if "Go back" in warning_message else (0, 255, 0), 2)
