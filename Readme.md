@@ -66,6 +66,4 @@ The locking mechanism is compatible with:
 - **macOS:** Uses `pmset displaysleepnow` (puts the display to sleep, which locks the screen).
 - **Linux (GNOME):** Uses `gnome-screensaver-command -l`.
 
-## License
 
-This project is licensed under the MIT License.
